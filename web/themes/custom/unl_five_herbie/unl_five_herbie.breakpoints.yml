@@ -33,7 +33,7 @@ unl_five_herbie.min-width-980:
 unl_five_herbie.min-width-1044:
   label: 'min-width-1044'
   mediaQuery: 'all and (min-width: 1044px)'
-  weight: 3
+  weight: 4
   multipliers:
     - 1x
     - 1.5x
@@ -41,7 +41,7 @@ unl_five_herbie.min-width-1044:
 unl_five_herbie.min-width-1600:
   label: 'min-width-1600'
   mediaQuery: 'all and (min-width: 1600px)'
-  weight: 3
+  weight: 5
   multipliers:
     - 1x
     - 1.5x

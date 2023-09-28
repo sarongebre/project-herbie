@@ -1,0 +1,15 @@
+uuid: cba91c5c-5cde-4498-9ec2-65d825c2eeaf
+langcode: en
+status: true
+dependencies: {  }
+name: 16_9_2400x1350
+label: '16:9 (2400x1350)'
+effects:
+  dc4c1ec5-7055-4f16-afb3-d3d1de9de61b:
+    uuid: dc4c1ec5-7055-4f16-afb3-d3d1de9de61b
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 2400
+      height: 1350
+      anchor: center-center

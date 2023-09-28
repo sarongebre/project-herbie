@@ -1,0 +1,48 @@
+unl_five_herbie.min-width-0:
+  label: 'min-width-0'
+  mediaQuery: 'all and (min-width: 0px)'
+  weight: 0
+  multipliers:
+    - 1x
+    - 1.5x
+    - 2x
+unl_five_herbie.min-width-480:
+  label: 'min-width-480'
+  mediaQuery: 'all and (min-width: 480px)'
+  weight: 1
+  multipliers:
+    - 1x
+    - 1.5x
+    - 2x
+unl_five_herbie.min-width-768:
+  label: 'min-width-768'
+  mediaQuery: 'all and (min-width: 768px)'
+  weight: 2
+  multipliers:
+    - 1x
+    - 1.5x
+    - 2x
+unl_five_herbie.min-width-980:
+  label: 'min-width-980'
+  mediaQuery: 'all and (min-width: 980px)'
+  weight: 3
+  multipliers:
+    - 1x
+    - 1.5x
+    - 2x
+unl_five_herbie.min-width-1044:
+  label: 'min-width-1044'
+  mediaQuery: 'all and (min-width: 1044px)'
+  weight: 3
+  multipliers:
+    - 1x
+    - 1.5x
+    - 2x
+unl_five_herbie.min-width-1600:
+  label: 'min-width-1600'
+  mediaQuery: 'all and (min-width: 1600px)'
+  weight: 3
+  multipliers:
+    - 1x
+    - 1.5x
+    - 2x

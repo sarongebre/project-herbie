@@ -1,0 +1,112 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.16_9_1280x720
+    - image.style.16_9_1440x810
+    - image.style.16_9_1600x900
+    - image.style.16_9_1920x1080
+    - image.style.16_9_2400x1350
+    - image.style.16_9_2560x1440
+    - image.style.16_9_3200x1800
+    - image.style.16_9_480x270
+    - image.style.16_9_640x360
+    - image.style.16_9_720x405
+    - image.style.16_9_960x540
+  theme:
+    - unl_five_herbie
+id: hero_ris
+label: Hero
+image_style_mappings:
+  -
+    image_mapping_type: image_style
+    image_mapping: 16_9_3200x1800
+    breakpoint_id: unl_five_herbie.min-width-1600
+    multiplier: 1.5x
+  -
+    image_mapping_type: image_style
+    image_mapping: 16_9_1920x1080
+    breakpoint_id: unl_five_herbie.min-width-1600
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: 16_9_3200x1800
+    breakpoint_id: unl_five_herbie.min-width-1600
+    multiplier: 2x
+  -
+    image_mapping_type: image_style
+    image_mapping: 16_9_2400x1350
+    breakpoint_id: unl_five_herbie.min-width-1044
+    multiplier: 1.5x
+  -
+    image_mapping_type: image_style
+    image_mapping: 16_9_1600x900
+    breakpoint_id: unl_five_herbie.min-width-1044
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: 16_9_3200x1800
+    breakpoint_id: unl_five_herbie.min-width-1044
+    multiplier: 2x
+  -
+    image_mapping_type: image_style
+    image_mapping: 16_9_1920x1080
+    breakpoint_id: unl_five_herbie.min-width-980
+    multiplier: 1.5x
+  -
+    image_mapping_type: image_style
+    image_mapping: 16_9_1280x720
+    breakpoint_id: unl_five_herbie.min-width-980
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: 16_9_2560x1440
+    breakpoint_id: unl_five_herbie.min-width-980
+    multiplier: 2x
+  -
+    image_mapping_type: image_style
+    image_mapping: 16_9_1440x810
+    breakpoint_id: unl_five_herbie.min-width-768
+    multiplier: 1.5x
+  -
+    image_mapping_type: image_style
+    image_mapping: 16_9_960x540
+    breakpoint_id: unl_five_herbie.min-width-768
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: 16_9_1920x1080
+    breakpoint_id: unl_five_herbie.min-width-768
+    multiplier: 2x
+  -
+    image_mapping_type: image_style
+    image_mapping: 16_9_960x540
+    breakpoint_id: unl_five_herbie.min-width-480
+    multiplier: 1.5x
+  -
+    image_mapping_type: image_style
+    image_mapping: 16_9_640x360
+    breakpoint_id: unl_five_herbie.min-width-480
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: 16_9_1280x720
+    breakpoint_id: unl_five_herbie.min-width-480
+    multiplier: 2x
+  -
+    image_mapping_type: image_style
+    image_mapping: 16_9_720x405
+    breakpoint_id: unl_five_herbie.min-width-0
+    multiplier: 1.5x
+  -
+    image_mapping_type: image_style
+    image_mapping: 16_9_480x270
+    breakpoint_id: unl_five_herbie.min-width-0
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: 16_9_960x540
+    breakpoint_id: unl_five_herbie.min-width-0
+    multiplier: 2x
+breakpoint_group: unl_five_herbie
+fallback_image_style: 16_9_960x540

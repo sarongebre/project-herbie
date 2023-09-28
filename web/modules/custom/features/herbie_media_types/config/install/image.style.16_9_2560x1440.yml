@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 16_9_2560x1440
+label: '16:9 (2560x1440)'
+effects:
+  49ae323e-f34c-4f94-916f-6e98c91046dc:
+    uuid: 49ae323e-f34c-4f94-916f-6e98c91046dc
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 2560
+      height: 1440
+      anchor: center-center

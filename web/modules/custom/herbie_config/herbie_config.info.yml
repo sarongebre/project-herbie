@@ -1,8 +1,0 @@
-name: 'Herbie config'
-description: 'A bundle of configuration files mainly to override default configuration in modules or other settings. '
-type: module
-core_version_requirement: '^9.4 || ^10'
-dependencies:
-  - metatag
-version: 1.0.1
-package: Herbie

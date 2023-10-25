@@ -1,3 +1,0 @@
-# This file should be copied to config.local.yaml before editing.
-name: cms-local
-additional_fqdns: ["cms-local.unl.edu"]

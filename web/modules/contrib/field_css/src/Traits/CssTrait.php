@@ -32,14 +32,16 @@ trait CssTrait {
     foreach ($fields as $field) {
       if ($field instanceof FieldConfig) {
         if ($field->getType() == 'css') {
-          $formatter_settings = EntityViewDisplay::load($entity->getEntityTypeId() . '.' . $entity->bundle() . '.' . $view_mode)
-            ->get('content')[$field->getName()]['settings'];
+          $entity_view_display = EntityViewDisplay::load($entity->getEntityTypeId() . '.' . $entity->bundle() . '.' . $view_mode);
+          $formatter_settings = $entity_view_display ? $entity_view_display->get('content')[$field->getName()]['settings'] ?? NULL : NULL;
 
-          if ($formatter_settings['prefix'] == 'entity-item') {
-            $return[] = self::generatePrefix($entity);
-          }
-          elseif ($formatter_settings['prefix'] == 'fixed-value') {
-            $return[] = $formatter_settings['fixed_prefix_value'];
+          if ($formatter_settings) {
+            if ($formatter_settings['prefix'] == 'entity-item') {
+              $return[] = self::generatePrefix($entity);
+            }
+            elseif ($formatter_settings['prefix'] == 'fixed-value') {
+              $return[] = $formatter_settings['fixed_prefix_value'];
+            }
           }
         }
       }

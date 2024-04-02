@@ -5,6 +5,7 @@
  * Modifies Webform UI to pare down options and enforce defaults.
  */
 
+use Drupal\Component\Utility\Bytes;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\WebformInterface;
@@ -101,7 +102,8 @@ function unl_webform_form_webform_ui_element_form_alter(&$form, FormStateInterfa
   unset($form['properties']['custom']);
   unset($form['properties']['display']['format_attributes']);
 
-  // Remove option to display title after element or to hide title.
+  // Save the value of the 'after' option and then remove the option to display title after an element or to hide title.
+  $afterValue = $form['properties']['form']['display_container']['title_display']['#options']['after'];
   unset($form['properties']['form']['display_container']['title_display']['#options']['after']);
   unset($form['properties']['form']['display_container']['title_display']['#options']['invisible']);
   // Default value may be set to 'invisible'.
@@ -144,6 +146,16 @@ function unl_webform_form_webform_ui_element_form_alter(&$form, FormStateInterfa
       unset($form['properties']['form']['display_container']['description_display']['#options']['after']);
       $form['properties']['form']['display_container']['description_display']['#default_value'] = 'before';
     }
+  }
+
+  // For the checkbox element, only allow the "after" title display option.
+  if ($element_type == 'checkbox') {
+    $form['properties']['form']['display_container']['title_display']['#options']['after'] = $afterValue;
+    $form['properties']['form']['display_container']['title_display']['#default_value'] = 'after';
+    unset($form['properties']['form']['display_container']['title_display']['#options']['before']);
+    unset($form['properties']['form']['display_container']['title_display']['#options']['inline']);
+    unset($form['properties']['form']['display_container']['title_display']['#options']['none']);
+    unset($form['properties']['form']['display_container']['title_display']['#empty_option']);
   }
 
   // Only allow field prefix and field suffix on textfield and number elements.
@@ -257,8 +269,9 @@ function unl_webform_form_webform_ui_element_form_alter(&$form, FormStateInterfa
     $form['properties']['file']['sanitize']['#default_value'] = TRUE;
     $form['properties']['file']['sanitize']['#disabled'] = TRUE;
 
-    // Set max file size to 10M.
-    $form['properties']['file']['max_filesize']['#default_value'] = $config->get('file.default_max_filesize');
+    // Set 'Maximum file size'.
+    $max_filesize = Bytes::toNumber($config->get('file.default_max_filesize')) / 1024 / 1024;
+    $form['properties']['file']['max_filesize']['#default_value'] = $max_filesize;
     $form['properties']['file']['max_filesize']['#disabled'] = TRUE;
 
     // Remove upload button option.
@@ -290,9 +303,6 @@ function unl_webform_webform_ui_element_form_validate($form, FormStateInterface 
     || $element_type == 'webform_document_file'
     || $element_type == 'webform_image_file'
     ) {
-    // Enforce defaults.
-    $form_state->setValue(['properties', 'sanitize'], TRUE);
-    $form_state->setValue(['properties', 'max_filesize'], $config->get('file.default_max_filesize'));
 
     // Validate file extensions.
     $extensions = explode(' ', $form_state->getValue(['properties', 'file_extensions']));

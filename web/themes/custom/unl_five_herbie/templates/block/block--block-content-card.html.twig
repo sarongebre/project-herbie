@@ -1,33 +1,50 @@
 {{ attach_library('unl_five_herbie/card') }}
 
 {% set attributes = attributes ?: create_attribute() %}
-{% set card_classes = ['dcf-card', 'dcf-card-as-link', 'dcf-d-flex', 'dcf-flex-col', 'unl-box-shadow'] %}
+{% set card_classes = ['dcf-card', 'dcf-d-flex', 'dcf-flex-col', 'unl-box-shadow'] %}
 
 {% set cardblock_wrapper_attributes = create_attribute() %}
 {% set cardblock_wrapper_attributes = cardblock_wrapper_attributes.addClass('dcf-card-block dcf-2nd') %}
 {% set image_wrapper_attributes = create_attribute() %}
 {% set image_wrapper_attributes = image_wrapper_attributes.addClass('dcf-1st dcf-ratio dcf-ratio-4x3') %}
 
-<div{{ attributes.addclass(card_classes) }}>
-  {{ title_prefix }}
-  {{ title_suffix }}
-  {% block card_body %}
-    <div {{ cardblock_wrapper_attributes }}>
-      {{ content.b_card_overline }}
-      {{ content.b_card_headline }}
-      {{ content.b_card_subhead }}
+{% if content.b_card_headline_link[0]['#url']%}
+  <div{{ attributes.addclass(card_classes, 'dcf-card-as-link') }}>
+{% else %}
+  <div{{ attributes.addclass(card_classes) }}>
+{% endif %}
 
-      {{ content.b_card_body }}
+    {{ title_prefix }}
+    {{ title_suffix }}
+    {% block card_body %}
+      <div {{ cardblock_wrapper_attributes }}>
+        {{ content.b_card_overline }}
+        {{ content.b_card_headline }}
+        {{ content.b_card_subhead }}
+        {{ content.b_card_body }}
 
-      {% if content.b_card_cta[0]['#url']%}
-        {{ content.b_card_cta }}
-      {% endif %}
-    </div>
-  {% endblock %}
+        {% if not content.b_card_headline_link.0 and content.b_card_cta %}
+          {% set card_button_objects = content.b_card_cta['#object'] %}
+					{% set card_button = 'b_card_cta' %}
+					{% set array_of_tandom_buttons = attribute(card_button_objects, card_button) %}
 
-  {% block card_img %}
-    <div {{ image_wrapper_attributes }}>
-      {{ content.b_card_image }}
-    </div>
-  {% endblock %}
-</div>
+          {% if (array_of_tandom_buttons|length > 1) %}
+            <div class="dcf-d-flex dcf-flex-wrap dcf-gap-3 dcf-mt-5" role="group">
+              {{ content.b_card_cta }}
+            </div>
+          {% else %}
+            {{ content.b_card_cta }}
+          {% endif %}
+       {% endif %}
+      </div>
+
+    {% endblock %}
+
+    {% if content.b_card_image.0 %}
+      {% block card_img %}
+        <div {{ image_wrapper_attributes }}>
+          {{ content.b_card_image }}
+        </div>
+      {% endblock %}
+    {% endif %}
+  </div>

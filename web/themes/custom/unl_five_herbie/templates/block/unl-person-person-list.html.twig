@@ -17,7 +17,7 @@
 
 {% else %}
 
-  <ol {{attributes.addClass(['dcf-list-bare', 'dcf-d-grid', 'unlcms-abbr-teaser-person-list', 'dcf-col-gap-vw', 'dcf-row-gap-6','dcf-mb-9'])}}>
+  <ol {{attributes.addClass(['dcf-list-bare', 'dcf-d-grid', 'unlcms-abbr-teaser-person-list', 'dcf-col-gap-vw', 'dcf-row-gap-6'])}}>
     {% for nid in nodes %}
       {{ drupal_entity('node', nid, view_mode) }}
     {% endfor %}

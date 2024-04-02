@@ -2,9 +2,7 @@
 
 {{ attach_library('unl_five_herbie/person') }}
 
-<article {{ attributes.addClass(classes) }}>
-  <div {{ content_attributes }}>
-    <li class="dcf-mb-0 dcf-card-as-link unlcms-img-zoom-hover" itemscope itemtype="https://schema.org/Person">
+    <li {{ content_attributes }} class="dcf-mb-0 dcf-card-as-link unlcms-img-zoom-hover" itemscope itemtype="https://schema.org/Person">
       <div class="unlcms-person-img dcf-ratio dcf-ratio-1x1 dcf-mb-2 unl-bg-light-gray unl-frame-quad">
         {% if node.n_person_photo.value %}
           {{ content.n_person_photo }}
@@ -34,5 +32,3 @@
         {% endif %}
       </div>
     </li>
-  </div>
-</article>

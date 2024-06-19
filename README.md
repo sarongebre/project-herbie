@@ -219,3 +219,4 @@ brew install ghostscript
 
 For more infromation regaridng installation go to https://imagemagick.org/script/download.php
 
+test

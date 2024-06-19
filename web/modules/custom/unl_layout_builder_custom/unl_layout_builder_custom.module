@@ -2,18 +2,70 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
-
+use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\node\NodeInterface;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\Core\Form\FormHelper;
 /**
  * Implements hook_form_alter().
  */
-function unl_layout_builder_custom_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function unl_layout_builder_custom_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+
+  $block_type = '';
+  if (isset($form['settings']['block_form']['#block'])) {
+    $block_type = $form['settings']['block_form']['#block']->bundle();
+  }
+
+  if ($block_type == 'card') {
+    // Remove background settings - None - empty option.
+    unset($form['layout_builder_style_background']['#empty_option']);
+  }
+
+  if ($block_type == 'embed') {
+    $form['settings']['block_form']['#process'][] = '_unl_layout_builder_custom_embed_block_process';
+  }
+
   switch ($form_id) {
     case 'layout_builder_add_block':
+      if ($block_type == 'card') {
+        // Set 'Cream' as the default.
+        $form['layout_builder_style_background']['#default_value'] = ['block_background_style_light'];
+        // Assign a callback to alter form elements: Hide the Buttons if a Headline Link is provided.
+        $form['settings']['block_form']['#process'][] = '_edit_card_block_form_elements';
+      };
+
+      if ($block_type == 'tandem') {
+        // Create a callback function to '#process' so we can be able to alter form elements when adding a block.
+        $form['settings']['block_form']['#process'][] = '_add_tandem_block_form_elements';
+      };
+
+      if ($block_type == 'simple_media') {
+        // Create a callback function to '#process' so we can be able to alter form elements when adding a block.
+        $form['settings']['block_form']['#process'][] = '_add_edit_simple_media_block_form_elements';
+      };
+
+      break;
     case 'layout_builder_update_block':
-      // Add our LBS heading before style options.
+    case 'layout_builder_edit_block':
+      if ($block_type == 'card') {
+        // Assign a callback to alter form elements: Hide the Buttons if a Headline Link is provided.
+        $form['settings']['block_form']['#process'][] = '_edit_card_block_form_elements';
+      }
+
+      if ($block_type == 'tandem') {
+        // Create a callback function to '#process' so we can be able to alter form elements when editing/updating a block.
+        $form['settings']['block_form']['#process'][] = '_edit_tandem_block_form_elements';
+      };
+
+      if ($block_type == 'simple_media') {
+        // Create a callback function to '#process' so we can be able to alter form elements when adding a block.
+        $form['settings']['block_form']['#process'][] = '_add_edit_simple_media_block_form_elements';
+      };
+
+       // Add our LBS heading before style options.
       _unl_layout_builder_custom_add_lbs_heading($form);
       break;
-
     case 'layout_builder_configure_section':
       // Remove container settings - None - empty option.
       unset($form['layout_builder_style_container']['#empty_option']);
@@ -30,7 +82,6 @@ function unl_layout_builder_custom_form_alter(&$form, FormStateInterface $form_s
       // Add our LBS heading before style options.
       _unl_layout_builder_custom_add_lbs_heading($form);
       break;
-
     case 'fragment_region_item_layout_builder_form':
     case 'fragment_region_item_after_content_layout_builder_form':
     case 'node_page_layout_builder_form':
@@ -39,7 +90,146 @@ function unl_layout_builder_custom_form_alter(&$form, FormStateInterface $form_s
   }
 }
 
+function _unl_layout_builder_custom_embed_block_process(array $element, FormStateInterface $form_state, &$form) {
+  $element['b_embed_link']['widget']['#element_validate'][] = '_unl_layout_builder_custom_validate_embed_block';
+    return $element;
+}
 
+function _unl_layout_builder_custom_validate_embed_block(array $element, FormStateInterface &$form_state, &$form) {
+  $values = $form_state->getValues();
+  $uri = $values['settings']['block_form']['b_embed_link'][0]['uri'];
+  $host = parse_url($uri)['host'];
+  $pattern = "/(unl.edu$)|(nebraska.edu$)/i";
+
+  if (!preg_match($pattern, $host)) {
+    $form_state->setErrorByName('b_embed_link', t('Embedding links are restricted to domains ending with unl.edu or nebraska.edu.'));
+    $form_state->setError($element);
+ }
+}
+
+/**
+ * Callback function.
+ */
+function _add_tandem_block_form_elements(array $element, FormStateInterface $form_state) {
+
+  $element['b_tandem_add_image_shadow']['#states'] = [
+    'visible' => [
+      'select[id="edit-settings-block-form-b-tandem-style"]' => [
+        'value' => '3',
+      ],
+    ],
+  ];
+
+  $element['b_tandem_shadow_position']['widget']['#states'] = array('invisible' => array(
+    array ('select[id="edit-settings-block-form-b-tandem-style"]' => array('value' => '2'),),
+    array ('select[id="edit-settings-block-form-b-tandem-style"]' => array('value' => '1'),),
+    array ('select[id="edit-settings-block-form-b-tandem-add-image-shadow"]' => array('value' => 'no'),),),);
+
+  $element['b_tandem_shadow_style']['widget']['#states'] = array('invisible' => array(
+    array ('select[id="edit-settings-block-form-b-tandem-style"]' => array('value' => '2'),),
+    array ('select[id="edit-settings-block-form-b-tandem-style"]' => array('value' => '1'),),
+    array ('select[id="edit-settings-block-form-b-tandem-add-image-shadow"]' => array('value' => 'no'),),),);
+
+  $element['b_tandem_image_position']['widget']['#states'] =  array('visible' => array(
+    'select[id="edit-settings-block-form-b-tandem-style"]' => array('value' => '3')
+  ));
+
+  $element['b_tandem_stack']['widget']['#states'] =  array('visible' => array(
+    'select[id="edit-settings-block-form-b-tandem-style"]' => array('value' => '2')
+  ));
+
+  $element['b_tandem_fade']['widget']['#states'] =  array('visible' => array(
+    'select[id="edit-settings-block-form-b-tandem-style"]' => array('value' => '1')
+  ));
+
+  if (isset($element['b_tandem_buttons'])) {
+  $element['b_tandem_buttons']['widget']['#states'] =  array('visible' => array(
+      'select[id="edit-settings-block-form-b-tandem-add-buttons-or-links"]' => array('value' => 'buttons')
+    ));
+  }
+
+  if (isset($element['b_tandem_links'])) {
+    $element['b_tandem_links']['widget']['#states'] =  array('visible' => array(
+      'select[id="edit-settings-block-form-b-tandem-add-buttons-or-links"]' => array('value' => 'links')
+    ));
+  }
+
+  return $element;
+}
+
+/**
+ * Callback function.
+ */
+function _edit_tandem_block_form_elements(array $element, FormStateInterface $form_state) {
+
+  $element['b_tandem_shadow_position']['widget']['#states'] = array('invisible' => array(
+    array ('select[id="edit-settings-block-form-b-tandem-style"]' => array('value' => '2'),),
+    array ('select[id="edit-settings-block-form-b-tandem-style"]' => array('value' => '1'),),
+    array ('select[id="edit-settings-block-form-b-tandem-add-image-shadow"]' => array('value' => 'no'),),),);
+
+  $element['b_tandem_shadow_style']['widget']['#states'] = array('invisible' => array(
+    array ('select[id="edit-settings-block-form-b-tandem-style"]' => array('value' => '2'),),
+    array ('select[id="edit-settings-block-form-b-tandem-style"]' => array('value' => '1'),),
+    array ('select[id="edit-settings-block-form-b-tandem-add-image-shadow"]' => array('value' => 'no'),),),);
+
+  $element['b_tandem_add_image_shadow']['#states'] = [
+      'visible' => [
+        'select[id="edit-settings-block-form-b-tandem-style"]' => [
+          'value' => '3',
+        ],
+      ],
+    ];
+
+  $element['b_tandem_image_position']['widget']['#states'] =  array('visible' => array(
+    'select[id="edit-settings-block-form-b-tandem-style"]' => array('value' => '3')
+    ));
+
+    $element['b_tandem_stack']['widget']['#states'] =  array('visible' => array(
+      'select[id="edit-settings-block-form-b-tandem-style"]' => array('value' => '2')
+    ));
+
+    $element['b_tandem_fade']['widget']['#states'] =  array('visible' => array(
+      'select[id="edit-settings-block-form-b-tandem-style"]' => array('value' => '1')
+    ));
+
+  if (isset($element['b_tandem_buttons'])) {
+    $element['b_tandem_buttons']['widget']['#states'] =  array('visible' => array(
+      'select[id="edit-settings-block-form-b-tandem-add-buttons-or-links"]' => array('value' => 'buttons')
+    ));
+  }
+
+  if (isset($element['b_tandem_links'])) {
+    $element['b_tandem_links']['widget']['#states'] =  array('visible' => array(
+      'select[id="edit-settings-block-form-b-tandem-add-buttons-or-links"]' => array('value' => 'links')
+    ));
+  }
+
+  return $element;
+}
+
+/**
+ * Callback function.
+ */
+function _add_edit_simple_media_block_form_elements(array $element, FormStateInterface $form_state) {
+  $element['b_simple_media_shadow_position']['widget']['#states'] = array('visible' => array(
+    array ('select[id="edit-settings-block-form-b-simple-media-border-or-shadow"]' => array('value' => 'shadow'))));
+
+  $element['b_simple_media_shadow_style']['widget']['#states'] = array('visible' => array(
+    array ('select[id="edit-settings-block-form-b-simple-media-border-or-shadow"]' => array('value' => 'shadow'))));
+
+  return $element;
+}
+
+
+/**
+ * Callback function.
+ */
+function _edit_card_block_form_elements(array $element, FormStateInterface $form_state) {
+  $element['b_card_cta']['widget']['#states'] =  array('visible' => array(
+    'input[id="edit-settings-block-form-b-card-headline-link-0-uri"]' => array('value' => '')
+  ));
+  return $element;
+}
 
 /**
  * Add an element to delineate the layout builder styles form section.
@@ -69,3 +259,30 @@ function _unl_layout_builder_custom_add_lbs_heading(&$form) {
   }
 }
 
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function unl_layout_builder_custom_menu_local_tasks_alter(&$data, $route_name, RefinableCacheableDependencyInterface &$cacheability) {
+  // Only allow the replicate menu item if content type is a builder_page.
+  $current_route = \Drupal::routeMatch();
+  $node = $current_route->getParameter('node');
+  if ($node instanceof NodeInterface) {
+    $bundle = $node->bundle();
+    if ($bundle !== 'builder_page' && isset($data['tabs'][0]['replicate_ui.local_tasks:entity.node.replicate'])) {
+      $data['tabs'][0]['replicate_ui.local_tasks:entity.node.replicate']['#access'] = FALSE;
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_operation_alter().
+ */
+function unl_layout_builder_custom_entity_operation_alter(array &$operations, EntityInterface $entity) {
+  // Remove the replicate option under operations in admin/content if content type is not a builder_page.
+  if (isset($operations['replicate']) && $entity instanceof NodeInterface) {
+    $node_type = $entity->getType();
+    if ($node_type !== 'builder_page') {
+      unset($operations['replicate']);
+    }
+  }
+}

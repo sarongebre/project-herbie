@@ -3,35 +3,42 @@ status: true
 dependencies:
   config:
     - core.entity_view_display.node.builder_page.default
+    - filter.format.archive
     - filter.format.block_body
+    - filter.format.minimal
     - filter.format.simple
     - filter.format.standard
     - filter.format.webform
     - media.type.file
     - media.type.image
     - media.type.remote_video
+    - node.type.archive_page
     - node.type.book
     - node.type.builder_page
     - node.type.news
     - node.type.person
     - node.type.webform
     - taxonomy.vocabulary.media_tags
+    - workflows.workflow.editorial
   module:
     - administerusersbyrole
     - block_content_permissions
     - book
+    - content_moderation
     - contextual
     - entity_share_client
     - entity_usage
     - external_entities
     - file
     - filter
+    - group
     - layout_builder
     - media
     - menu_admin_per_menu
     - node
     - paragraphs
     - rabbit_hole
+    - replicate_ui
     - scanner
     - system
     - taxonomy
@@ -48,6 +55,7 @@ permissions:
   - 'access contextual links'
   - 'access entity usage statistics'
   - 'access files overview'
+  - 'access group overview'
   - 'access media overview'
   - 'access site in maintenance mode'
   - 'access toolbar'
@@ -68,31 +76,44 @@ permissions:
   - 'create cta block content'
   - 'create file media'
   - 'create hero block content'
+  - 'create icon_links block content'
   - 'create image media'
   - 'create logo_cloud block content'
   - 'create new books'
   - 'create news content'
   - 'create person content'
   - 'create photo_hero block content'
+  - 'create proofpoint block content'
   - 'create remote_video media'
+  - 'create slideshow block content'
   - 'create social_media_links block content'
+  - 'create tabs block content'
+  - 'create tandem block content'
   - 'create terms in media_tags'
+  - 'create timeline block content'
   - 'create unl_directory_entry external entity'
   - 'delete any accordion block content'
   - 'delete any card block content'
-  - 'delete any contact_info block content'
   - 'delete any content block content'
   - 'delete any cta block content'
   - 'delete any file media'
   - 'delete any hero block content'
+  - 'delete any icon_links block content'
   - 'delete any image media'
   - 'delete any logo_cloud block content'
   - 'delete any photo_hero block content'
+  - 'delete any proofpoint block content'
   - 'delete any remote_video media'
+  - 'delete any slideshow block content'
   - 'delete any social_media_links block content'
+  - 'delete any tabs block content'
+  - 'delete any tandem block content'
+  - 'delete any timeline block content'
+  - 'delete archive_page revisions'
   - 'delete book revisions'
   - 'delete builder_page revisions'
   - 'delete news revisions'
+  - 'delete own archive_page content'
   - 'delete own book content'
   - 'delete own builder_page content'
   - 'delete own file media'
@@ -104,6 +125,7 @@ permissions:
   - 'delete person revisions'
   - 'delete unl_directory_entry external entity'
   - 'delete webform revisions'
+  - 'edit any archive_page content'
   - 'edit any book content'
   - 'edit any builder_page content'
   - 'edit any file media'
@@ -112,6 +134,7 @@ permissions:
   - 'edit any person content'
   - 'edit any remote_video media'
   - 'edit any webform content'
+  - 'edit own archive_page content'
   - 'edit own book content'
   - 'edit own builder_page content'
   - 'edit own file media'
@@ -124,6 +147,8 @@ permissions:
   - entity_share_client_pull_content
   - 'perform search only'
   - 'rabbit hole bypass media'
+  - 'replicate entities'
+  - 'revert archive_page revisions'
   - 'revert book revisions'
   - 'revert builder_page revisions'
   - 'revert news revisions'
@@ -135,17 +160,31 @@ permissions:
   - 'update any content block content'
   - 'update any cta block content'
   - 'update any hero block content'
+  - 'update any icon_links block content'
   - 'update any logo_cloud block content'
   - 'update any photo_hero block content'
+  - 'update any proofpoint block content'
+  - 'update any slideshow block content'
   - 'update any social_media_links block content'
+  - 'update any tabs block content'
+  - 'update any tandem block content'
+  - 'update any timeline block content'
   - 'update unl_directory_entry external entity'
+  - 'use editorial transition create_new_draft'
+  - 'use editorial transition publish'
+  - 'use editorial transition unpublish'
+  - 'use text format archive'
   - 'use text format block_body'
+  - 'use text format minimal'
   - 'use text format simple'
   - 'use text format standard'
   - 'use text format webform'
+  - 'view any unpublished content'
   - 'view any webform submission'
+  - 'view archive_page revisions'
   - 'view book revisions'
   - 'view builder_page revisions'
+  - 'view latest version'
   - 'view news revisions'
   - 'view own unpublished content'
   - 'view own unpublished media'

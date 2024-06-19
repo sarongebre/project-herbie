@@ -1,16 +1,13 @@
-{% set classes = ['node', 'node--type-' ~ (node.bundle|clean_class), node.isPromoted() ? 'node--promoted', node.isSticky() ? 'node--sticky', not node.isPublished() ? 'node--unpublished', view_mode ? 'node--view-mode-' ~ (view_mode|clean_class), 'clearfix'] %}
+{% set classes = ['node', 'node--type-' ~ (node.bundle|clean_class), node.isPromoted() ? 'node--promoted', node.isSticky() ? 'node--sticky', not node.isPublished() ? 'node--unpublished', view_mode ? 'node--view-mode-' ~ (view_mode|clean_class), 'clearfix', 'dcf-mb-0', 'dcf-card-as-link', 'unlcms-img-zoom-hover'] %}
 
 {{ attach_library('unl_five_herbie/person') }}
-
-<article {{ attributes.addClass(classes) }}>
-  <div {{ content_attributes }}>
-    <li class="dcf-mb-0 dcf-card-as-link unlcms-img-zoom-hover" itemscope itemtype="https://schema.org/Person">
+    <li  {{content_attributes.addClass(classes)}} itemscope itemtype="https://schema.org/Person">
       <div class="unlcms-person-img dcf-ratio dcf-ratio-1x1 dcf-mb-2 unl-bg-light-gray unl-frame-quad">
         {% if node.n_person_photo.value %}
           {{ content.n_person_photo }}
         {% elseif node.n_person_unldirectoryreference.entity.ee_unldir_imageurl.value %}
           {% set alt = 'Avatar for ' ~ node.label %}
-          <img class="dcf-ratio-child dcf-obj-fit-cover" itemprop="image" src="{{ node.n_person_unldirectoryreference.entity.ee_unldir_imageurl.value }}?s=large" alt="{{ alt }}"/>
+          <img class="dcf-ratio-child dcf-obj-fit-cover" itemprop="image" src="{{node.n_person_unldirectoryreference.entity.ee_unldir_imageurl.value}}?s=original" alt="{{ alt }}"/>
         {% else %}
           <div class="dcf-ratio-child dcf-d-flex dcf-ai-center dcf-jc-center unl-gray">
             <svg class="dcf-h-7 dcf-w-7 dcf-circle dcf-fill-current" aria-hidden="true" focusable="false" height="16" width="16" viewbox="0 0 48 48">
@@ -34,5 +31,3 @@
         {% endif %}
       </div>
     </li>
-  </div>
-</article>

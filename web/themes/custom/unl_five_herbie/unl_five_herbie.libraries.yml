@@ -5,6 +5,8 @@ global-styling:
       css/global.css: {}
       css/media.css: {}
       css/wdn-overrides.css: {}
+  js:
+    js/theme/scroll-animations.js: {}
 
 layout-builder:
   css:
@@ -92,3 +94,29 @@ icon_links:
   css:
     theme:
       css/theme/block/icon_links.css: {}
+
+tabs:
+  version: VERSION
+  css:
+    theme:
+      css/theme/block/tabs.css: {}
+  js:
+    js/theme/tabs.js: {}
+
+cta:
+  version: VERSION
+  css:
+    theme:
+      css/theme/block/cta.css: {}
+
+tandem:
+  version: VERSION
+  css:
+    theme:
+      css/theme/block/tandem.css: {}
+
+simple_media:
+  version: VERSION
+  css:
+    theme:
+      css/theme/block/simple_media.css: {}
